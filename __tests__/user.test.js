@@ -89,4 +89,20 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('has a cookie', async() => {
+    await User.create({
+      email: 'Cookie@yum.com',
+      password: 'chocolateChip'
+    });
+    return request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'Cookie@yum.com', 
+        password: 'chocolateChip'
+      })
+      .then(res => {
+        expect(res.header['set-cookie'][0]).toEqual(expect.any(String));
+      });
+  });
 });
