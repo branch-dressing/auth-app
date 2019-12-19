@@ -31,4 +31,24 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('can login a user', async() => {
+    const user = User.create({ 
+      email: 'findme@gmail.com', 
+      password: 'badpass' 
+    });
+    return request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'findme@gmail.com', 
+        password: 'badpass'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          email: 'findme@gmail.com',
+          __v: 0
+        });
+      });
+  });
 });
