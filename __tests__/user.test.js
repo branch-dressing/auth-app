@@ -34,25 +34,25 @@ describe('app routes', () => {
 
   it('can login a user', async() => {
     User.create({ 
-      email: 'findme@gmail.com', 
+      email: 'something@something.com', 
       password: 'badpass' 
     });
     return request(app)
       .post('/api/v1/auth/login')
       .send({
-        email: 'findme@gmail.com', 
+        email: 'something@something.com', 
         password: 'badpass'
       })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          email: 'findme@gmail.com',
+          email: 'something@something.com',
           __v: 0
         });
       });
   });
 
-  it('returns an error if login with wrong email', () => {
+  it('returns an error if login with wrong email', async() => {
     User.create({ 
       email: 'findme@gmail.com', 
       password: 'badpass' 
@@ -69,5 +69,24 @@ describe('app routes', () => {
           status: 401
         });
       });
-  })
+  });
+
+  it('returns an error if login with wrong password', async() => {
+    User.create({ 
+      email: 'me@me.com', 
+      password: 'badpass' 
+    });
+    return request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'me@me.com', 
+        password: 'goodpass'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          message: 'Invalid Email/Password',
+          status: 401
+        });
+      });
+  });
 });
