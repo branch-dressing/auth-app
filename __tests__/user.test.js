@@ -33,7 +33,7 @@ describe('app routes', () => {
   });
 
   it('can login a user', async() => {
-    User.create({ 
+    await User.create({ 
       email: 'something@something.com', 
       password: 'badpass' 
     });
@@ -53,7 +53,7 @@ describe('app routes', () => {
   });
 
   it('returns an error if login with wrong email', async() => {
-    User.create({ 
+    await User.create({ 
       email: 'findme@gmail.com', 
       password: 'badpass' 
     });
@@ -72,7 +72,7 @@ describe('app routes', () => {
   });
 
   it('returns an error if login with wrong password', async() => {
-    User.create({ 
+    await User.create({ 
       email: 'me@me.com', 
       password: 'badpass' 
     });
