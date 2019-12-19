@@ -33,7 +33,7 @@ describe('app routes', () => {
   });
 
   it('can login a user', async() => {
-    const user = User.create({ 
+    User.create({ 
       email: 'findme@gmail.com', 
       password: 'badpass' 
     });
@@ -51,4 +51,23 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('returns an error if login with wrong email', () => {
+    User.create({ 
+      email: 'findme@gmail.com', 
+      password: 'badpass' 
+    });
+    return request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'findme@gmail.edu', 
+        password: 'badpass'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          message: 'Invalid Email/Password',
+          status: 401
+        });
+      });
+  })
 });
